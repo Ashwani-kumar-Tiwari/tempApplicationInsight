@@ -1,3 +1,6 @@
+from flask import Flask
+app = Flask(__name__)
+
 from datetime import datetime
 from opencensus.ext.azure import metrics_exporter
 from opencensus.stats import aggregation as aggregation_module
@@ -31,8 +34,12 @@ exporter = metrics_exporter.new_metrics_exporter(
 
 view_manager.register_exporter(exporter)
 
+@app.route("/")
+def home():
+    return "Hello, this is a sample Python Web App running on Flask Framework!!!"
+
 def prompt():
-    input("Press enter.")
+    home()
     mmap.measure_int_put(prompt_measure, 1)
     mmap.record(tmap)
     metrics = list(mmap.measure_to_view_map.get_metrics(datetime.utcnow()))
