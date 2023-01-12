@@ -14,12 +14,12 @@ def home():
 
     logger = logging.getLogger(__name__)
 
-    handler = AzureLogHandler(connection_string='InstrumentationKey=c08ced98-b263-4db1-8f7d-65c326a40712')
+    handler = AzureLogHandler(connection_string='InstrumentationKey=c08ced98-b263-4db1-8f7d-65c326a40712;IngestionEndpoint=https://centralus-2.in.applicationinsights.azure.com/;LiveEndpoint=https://centralus.livediagnostics.monitor.azure.com/')
     handler.setFormatter(logging.Formatter('%(traceId)s %(spanId)s %(message)s'))
     logger.addHandler(handler)
 
     tracer = Tracer(
-        exporter=AzureExporter(connection_string='InstrumentationKey=c08ced98-b263-4db1-8f7d-65c326a40712'),
+        exporter=AzureExporter(connection_string='InstrumentationKey=c08ced98-b263-4db1-8f7d-65c326a40712;IngestionEndpoint=https://centralus-2.in.applicationinsights.azure.com/;LiveEndpoint=https://centralus.livediagnostics.monitor.azure.com/'),
         sampler=ProbabilitySampler(1.0)
     )
 
@@ -27,7 +27,7 @@ def home():
     with tracer.span(name='test'):
         logger.warning('In the span')
     logger.warning('After the span')
-    
+
     return "Hello, this is a sample Python Web App running on Flask Framework!!!"
 
 
